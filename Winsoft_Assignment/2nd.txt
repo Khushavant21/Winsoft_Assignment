@@ -1,0 +1,53 @@
+Q2:Find maximum sum path involving elements of given arrays
+Given two sorted arrays of integers, find a maximum sum path involving elements of both arrays whose sum is maximum. 
+We can start from either array, but we can switch between arrays only through its common elements.
+For example,
+
+Input: X = { 3, 6, 7, 8, 10, 12, 15, 18, 100 }
+Y = { 1, 2, 3, 5, 7, 9, 10, 11, 15, 16, 18, 25, 50 }  
+The maximum sum path is: 1 —> 2 —> 3 —> 6 —> 7 —> 9 —> 10 —> 12 —> 15 —> 16 —> 18 —> 100 
+The maximum sum is 199
+
+Answer:
+// Java implementation code 
+import java.util.*;
+public class Solution {
+    public static int calculateMaxSumPath(int[] arrayX, int[] arrayY) {
+        int lengthX = arrayX.length;
+        int lengthY = arrayY.length;
+
+        int i = 0, j = 0;
+        int sumX = 0, sumY = 0;
+        int maxSum = 0;
+
+        while (i < lengthX && j < lengthY) {
+            if (arrayX[i] < arrayY[j])
+                sumX += arrayX[i++];
+            else if (arrayX[i] > arrayY[j])
+                sumY += arrayY[j++];
+            else {
+                maxSum += Math.max(sumX, sumY);
+                maxSum += arrayX[i];
+                sumX = 0;
+                sumY = 0;
+                i++;
+                j++;
+            }
+        }
+        while (i < lengthX)
+            sumX += arrayX[i++];
+
+        while (j < lengthY)
+            sumY += arrayY[j++];
+
+        maxSum += Math.max(sumX, sumY);
+
+        return maxSum;
+    }
+    public static void main(String[] args) {
+        int[] arrayX = { 3, 6, 7, 8, 10, 12, 15, 18, 100 };
+        int[] arrayY = { 1, 2, 3, 5, 7, 9, 10, 11, 15, 16, 18, 25, 50 };
+
+        System.out.println("Maximum sum path is: " + calculateMaxSumPath(arrayX, arrayY));
+    }
+}
